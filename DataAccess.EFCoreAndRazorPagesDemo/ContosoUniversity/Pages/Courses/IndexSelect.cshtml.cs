@@ -9,9 +9,9 @@ namespace ContosoUniversity.Pages.Courses
 {
     public class IndexSelectModel : PageModel
     {
-        private readonly ContosoUniversity.Models.SchoolContext _context;
+        private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public IndexSelectModel(ContosoUniversity.Models.SchoolContext context)
+        public IndexSelectModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }

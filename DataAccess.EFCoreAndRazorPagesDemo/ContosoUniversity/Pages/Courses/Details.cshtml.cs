@@ -11,9 +11,9 @@ namespace ContosoUniversity.Pages.Courses
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.Models.SchoolContext _context;
+        private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public DetailsModel(ContosoUniversity.Models.SchoolContext context)
+        public DetailsModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }
@@ -28,7 +28,9 @@ namespace ContosoUniversity.Pages.Courses
             }
 
             Course = await _context.Courses
-                .Include(c => c.Department).FirstOrDefaultAsync(m => m.CourseID == id);
+                .AsNoTracking()
+                .Include(c => c.Department)
+                .FirstOrDefaultAsync(m => m.CourseID == id);
 
             if (Course == null)
             {

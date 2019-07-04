@@ -11,9 +11,9 @@ namespace ContosoUniversity.Pages.Instructors
 {
     public class DeleteModel : PageModel
     {
-        private readonly ContosoUniversity.Models.SchoolContext _context;
+        private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public DeleteModel(ContosoUniversity.Models.SchoolContext context)
+        public DeleteModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }

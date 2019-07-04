@@ -9,18 +9,18 @@ using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Pages.Courses
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DepartmentNamePageModel
     {
-        private readonly ContosoUniversity.Models.SchoolContext _context;
+        private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public CreateModel(ContosoUniversity.Models.SchoolContext context)
+        public CreateModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+            PopulateDepartmentsDropDownList(_context);
             return Page();
         }
 
@@ -34,10 +34,17 @@ namespace ContosoUniversity.Pages.Courses
                 return Page();
             }
 
-            _context.Courses.Add(Course);
-            await _context.SaveChangesAsync();
+            var emptyCourse = new Course();
 
-            return RedirectToPage("./Index");
+            if (await TryUpdateModelAsync<Course>(emptyCourse,"course",s => s.CourseID,s => s.DepartmentID,s => s.Title,s => s.Credits))
+            {
+                _context.Courses.Add(emptyCourse);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            PopulateDepartmentsDropDownList(_context,emptyCourse.DepartmentID);
+            return Page();
         }
     }
 }
