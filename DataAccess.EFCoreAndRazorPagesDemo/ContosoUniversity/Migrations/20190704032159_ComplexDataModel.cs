@@ -40,6 +40,16 @@ namespace ContosoUniversity.Migrations
                 nullable: false,
                 defaultValue: 0);
 
+            //如果不删除数据库重新运行，可以采取修改列的方式
+            //migrationBuilder.AlterColumn<string>(
+            //    name: "Title",
+            //    table: "Course",
+            //    maxLength: 50,
+            //    nullable: true,
+            //    oldClrType: typeof(string),
+            //    oldNullable: true);
+
+
             migrationBuilder.CreateTable(
                 name: "Instructor",
                 columns: table => new
@@ -100,6 +110,17 @@ namespace ContosoUniversity.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            ////如果不删除数据库重新运行，可以采取修改列的方式
+            //migrationBuilder.Sql("INSERT INTO dbo.Department (Name, Budget, StartDate) VALUES ('Temp', 0.00, GETDATE())");
+            // Default value for FK points to department created above, with
+            // defaultValue changed to 1 in following AddColumn statement.
+
+            //migrationBuilder.AddColumn<int>(
+            //    name: "DepartmentID",
+            //    table: "Course",
+            //    nullable: false,
+            //    defaultValue: 1);
 
             migrationBuilder.CreateTable(
                 name: "OfficeAssignment",
