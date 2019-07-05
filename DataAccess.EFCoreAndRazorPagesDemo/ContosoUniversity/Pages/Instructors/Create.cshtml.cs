@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.Pages.Instructors
 {
-    public class CreateModel : PageModel
+    public class CreateModel : InstructorCoursesPageModel
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
 
@@ -20,23 +16,46 @@ namespace ContosoUniversity.Pages.Instructors
 
         public IActionResult OnGet()
         {
+            var instructor = new Instructor();
+            instructor.CourseAssignments = new List<CourseAssignment>();
+
+            PopulateAssignedCourseData(_context,instructor);
             return Page();
         }
 
         [BindProperty]
         public Instructor Instructor { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCourses)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Instructors.Add(Instructor);
-            await _context.SaveChangesAsync();
+            var newInstructor = new Instructor();
+            if (selectedCourses != null)
+            {
+                newInstructor.CourseAssignments = new List<CourseAssignment>();
+                foreach (var course in selectedCourses)
+                {
+                    var coursesToAdd = new CourseAssignment
+                    {
+                        CourseID = int.Parse(course)
+                    };
+                    newInstructor.CourseAssignments.Add(coursesToAdd);
+                }
+            }
 
-            return RedirectToPage("./Index");
+            if (await TryUpdateModelAsync<Instructor>(newInstructor,"Instructor",i => i.FirstMidName,i => i.LastName,i => i.HireDate,i => i.OfficeAssignment))
+            {
+                _context.Instructors.Add(newInstructor);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            PopulateAssignedCourseData(_context,newInstructor);
+            return Page();
         }
     }
 }

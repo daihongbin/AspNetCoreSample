@@ -11,7 +11,7 @@ namespace ContosoUniversity.Models
         [Display(Name = "Office Location")]
         public string Location { get; set; }
 
-        [Required]
+        //[Required]，不需要加这个
         public Instructor Instructor { get; set; }
     }
 }

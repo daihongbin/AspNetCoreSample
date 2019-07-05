@@ -15,8 +15,8 @@ namespace ContosoUniversity.Pages.Instructors
         {
             var allCourses = context.Courses;
             var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseID));
-            AssignedCourseDataList = new List<AssignedCourseData>();
 
+            AssignedCourseDataList = new List<AssignedCourseData>();
             foreach (var course in allCourses)
             {
                 AssignedCourseDataList.Add(new AssignedCourseData

@@ -5,9 +5,7 @@ using System;
 using System.Threading.Tasks;
 
 namespace ContosoUniversity.Pages.Instructors
-
-{
-
+{   
     public class EditModel : InstructorCoursesPageModel
     {
 
@@ -46,10 +44,10 @@ namespace ContosoUniversity.Pages.Instructors
         public async Task<IActionResult> OnPostAsync(int? id, string[] selectedCourses)
         {
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
             var instructorToUpdate = await _context.Instructors
                 .Include(i => i.OfficeAssignment)
