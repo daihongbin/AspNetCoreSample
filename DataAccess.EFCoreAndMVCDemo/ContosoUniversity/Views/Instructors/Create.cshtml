@@ -27,6 +27,39 @@
                 <input asp-for="HireDate" class="form-control" />
                 <span asp-validation-for="HireDate" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="OfficeAssignment.Location" class="control-label"></label>
+                <input asp-for="OfficeAssignment.Location" class="form-control" />
+                <span asp-validation-for="OfficeAssignment.Location"/>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <table>
+                        <tr>
+                            @{ 
+                                var cnt = 0;
+                                var courses = (List<ContosoUniversity.Models.SchoolViewModels.AssignedCourseData>)ViewBag.Courses;
+
+                                foreach (var course in courses)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+
+                                    @:<td>
+                                        <input type="checkbox" name="selectedCourses" value="@course.CourseID"
+                                               @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                                               @course.CourseID @: @course.Title
+                                    @:</td>
+                                }
+                            }
+                    </table>
+                </div>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
