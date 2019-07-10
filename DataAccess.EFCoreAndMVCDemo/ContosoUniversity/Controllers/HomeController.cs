@@ -36,7 +36,7 @@ namespace ContosoUniversity.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<ActionResult> About()
+        /*public async Task<ActionResult> About()
         {
             IQueryable<EnrollmentDateGroup> data = from student in _context.Students
                 group student by student.EnrollmentDate
@@ -48,6 +48,48 @@ namespace ContosoUniversity.Controllers
                 };
 
             return View(await data.AsNoTracking().ToListAsync());
+        }*/
+
+        public async Task<ActionResult> About()
+        {
+            var groups = new List<EnrollmentDateGroup>();
+            var conn = _context.Database.GetDbConnection();
+
+            try
+            {
+                await conn.OpenAsync();
+
+                using (var command = conn.CreateCommand())
+                {
+                    var query = @"select EnrollmentDate,Count(*) as StudentCount
+                                from Person
+                                where Discriminator = 'Student'
+                                group by EnrollmentDate";
+                    command.CommandText = query;
+                    var reader = await command.ExecuteReaderAsync();
+
+                    if (reader.HasRows)
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var row = new EnrollmentDateGroup
+                            {
+                                EnrollmentDate = reader.GetDateTime(0),
+                                StudentCount = reader.GetInt32(1)
+                            };
+                            groups.Add(row);
+                        }
+                    }
+                    reader.Dispose();
+
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return View(groups);
         }
     }
 }

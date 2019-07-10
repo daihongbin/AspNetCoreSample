@@ -141,9 +141,22 @@ namespace ContosoUniversity.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(int id)
+
+        public IActionResult UpdateCourseCredits()
         {
-            return _context.Courses.Any(e => e.CourseID == id);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCourseCredits(int? multiplier)
+        {
+            if (multiplier != null)
+            {
+                var sql = @"update course set credits = credits * {0}";
+                ViewData["RowsAffected"] = await _context.Database.ExecuteSqlCommandAsync(sql, parameters: multiplier);
+            }
+
+            return View();
         }
 
         #region private_method
