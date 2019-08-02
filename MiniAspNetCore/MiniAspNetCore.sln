@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mini.Core", "AspNetCore.Mini.Core\AspNetCore.Mini.Core.csproj", "{8928901E-1478-4A7C-BDED-23930E9A302D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Mini.Core", "AspNetCore.Mini.Core\AspNetCore.Mini.Core.csproj", "{8928901E-1478-4A7C-BDED-23930E9A302D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{5DF7D98A-8AAC-460E-940E-31B943565FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCore", "AppCore\AppCore.csproj", "{34905962-10A1-44B9-8427-1C089B43FE2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore", "AppCore\AppCore.csproj", "{34905962-10A1-44B9-8427-1C089B43FE2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniWebServer", "MiniWebServer\MiniWebServer.csproj", "{A2ED8508-30CF-48DA-AB13-C3E15036865F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,18 @@ Global
 		{34905962-10A1-44B9-8427-1C089B43FE2D}.Release|x64.Build.0 = Release|Any CPU
 		{34905962-10A1-44B9-8427-1C089B43FE2D}.Release|x86.ActiveCfg = Release|Any CPU
 		{34905962-10A1-44B9-8427-1C089B43FE2D}.Release|x86.Build.0 = Release|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Debug|x64.Build.0 = Debug|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Debug|x86.Build.0 = Debug|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Release|x64.ActiveCfg = Release|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Release|x64.Build.0 = Release|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2ED8508-30CF-48DA-AB13-C3E15036865F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
