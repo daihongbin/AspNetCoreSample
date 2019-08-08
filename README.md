@@ -1,2 +1,2 @@
-# netCoreDemo
-MSDN Asp.Net Core
+# AspNetCoreSample
+将项目迁移到Azure DevOps
