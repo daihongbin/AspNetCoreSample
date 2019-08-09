@@ -14,7 +14,9 @@ namespace StartupSample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
+                .UseStartup<Startup>();
+                // 此处可以进行类似Startup类中类似的配置，下面只是演示一下，实际中，很少会这么做
+                /*
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
 
@@ -30,5 +32,6 @@ namespace StartupSample
                     var logger = loggerFactory.CreateLogger<Program>();
                     var env = app.ApplicationServices.GetRequiredService<IHostingEnvironment>();
                 });
+                */
     }
 }

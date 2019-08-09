@@ -1,0 +1,16 @@
+@using Microsoft.Extensions.Options;
+@using StartupSample;
+
+@{
+    ViewData["title"] = "Index";
+}
+
+<h2>Index</h2>
+
+@{
+    var optionsAccessor = (IOptions<AppOptions>)ViewData["OptionsAccessor"];
+    if(optionsAccessor != null)
+    {
+        @optionsAccessor.Value.Option;
+    }
+}

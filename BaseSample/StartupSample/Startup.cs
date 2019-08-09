@@ -25,8 +25,14 @@ namespace StartupSample
         // 这个方法主要是注册服务用的
         public void ConfigureServices(IServiceCollection services)
         {
-            var logger = _loggerFactory.CreateLogger<Startup>();
+            services.AddTransient<IStartupFilter, RequestSetOptionsStartupFilter>();
 
+            services.AddOptions<AppOptions>();
+
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+
+            #region 输出当前环境的日志
+            var logger = _loggerFactory.CreateLogger<Startup>();
             if (_env.IsDevelopment())
             {
                 logger.LogInformation("Development envirment");
@@ -35,6 +41,7 @@ namespace StartupSample
             {
                 logger.LogInformation($"Environment:{_env.EnvironmentName}");
             }
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,9 +52,16 @@ namespace StartupSample
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+                        
+            app.UseMvc(routes =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                routes.MapRoute
+                (
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                );
             });
         }
     }
