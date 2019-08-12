@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace GenericWebHostSample
 {
+    //这个里面针对主机的配置，主要是给非web主机项目进行使用，web主机有其专属配置。
     public class Program
     {
         private IHost _host;
