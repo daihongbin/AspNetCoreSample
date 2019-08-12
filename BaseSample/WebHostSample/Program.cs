@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace WebHostSample
@@ -48,26 +48,123 @@ namespace WebHostSample
             */
 
             /*
-            //RequestDelegate 
-            using (var host = WebHost.Start(app => app.Response.WriteAsync("Heloo,Micahel!")))
+            //Start(RequestDelegate app)
+            using (var host = WebHost.Start(app => app.Response.WriteAsync("Hello,Micahel!")))
             {
                 Console.WriteLine("Use Ctrl + C to shutdown the host......");
                 host.WaitForShutdown();
             }
             */
 
-            
+            //Start(string url, RequestDelegate app)
+            /*
+            using (var host = WebHost.Start("http://localhost:8080", app => app.Response.WriteAsync("Hello,Michael!")))
+            {
+                Console.WriteLine("Use Ctrl + C to shutdown the host...");
+                host.WaitForShutdown();
+            }
+            */
+
+            //Start(Action<IRouteBuilder> routeBuilder)
+            /*
+            using (var host = WebHost.Start(router =>
+            {
+                router.MapGet("hello/{name}", (req, res, data) =>
+                 {
+                     return res.WriteAsync($"Hello,{data.Values["name"]}!");
+                 })
+                .MapGet("buenosdias/{name}", (req, res, data) =>
+                 {
+                     return res.WriteAsync($"Buenos dias,{data.Values["name"]}");
+                 })
+                .MapGet("throw/{message?}", (req, res, data) =>
+                 {
+                     throw new Exception((string)data.Values["message"] ?? "Uh oh!");
+                 })
+                .MapGet("{greeting}/{name}", (req, res, data) =>
+                 {
+                     return res.WriteAsync($"{data.Values["greeting"]},{data.Values["name"]}!");
+                 })
+                .MapGet("", (req, res, data) =>
+                 {
+                     return res.WriteAsync("Hello,Michael!");
+                 });
+            }))
+            {
+                Console.WriteLine("Use Ctrl + C to shutdown the host...");
+                host.WaitForShutdown();
+            }
+            */
+
+            /*
+            //Start(string url, Action<IRouteBuilder> routeBuilder)
+            using (var host = WebHost.Start("http://localhost:8080", router =>
+            {
+                router.MapGet("hello/{name}", (req, res, data) =>
+                {
+                    return res.WriteAsync($"Hello,{data.Values["name"]}!");
+                })
+                .MapGet("buenosdias/{name}", (req, res, data) =>
+                {
+                    return res.WriteAsync($"Buenos dias,{data.Values["name"]}");
+                })
+                .MapGet("throw/{message?}", (req, res, data) =>
+                {
+                    throw new Exception((string)data.Values["message"] ?? "Uh oh!");
+                })
+                .MapGet("{greeting}/{name}", (req, res, data) =>
+                {
+                    return res.WriteAsync($"{data.Values["greeting"]},{data.Values["name"]}!");
+                })
+                .MapGet("", (req, res, data) =>
+                {
+                    return res.WriteAsync("Hello,Michael!");
+                });
+            }))
+            {
+                Console.WriteLine("Use Ctrl + C to shutdown the host...");
+                host.WaitForShutdown();
+            }
+            */
+
+            //StartWith(Action<IApplicationBuilder> app)
+            /*
+            using (var host = WebHost.StartWith(app => app.Use(next => 
+            {
+                return async context =>
+                {
+                    await context.Response.WriteAsync("Hello Michael!");
+                };
+            })))
+            {
+                Console.WriteLine("Use Ctrl + C to shutdown the host...");
+                host.WaitForShutdown();
+            }
+            */
+
+            //StartWith(string url, Action<IApplicationBuilder> app)
+            using (var host = WebHost.StartWith("http://localhost:8080", app => app.Use(next =>
+            {
+                return async context =>
+                {
+                    await context.Response.WriteAsync("Hello Michael!");
+                };
+            })))
+            {
+                Console.WriteLine("Use Ctrl + C to shutdown the host...");
+                host.WaitForShutdown();
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseSetting(WebHostDefaults.ApplicationKey,"WebHostSample") //显示指定应用程序名称
-            .UseSetting(WebHostDefaults.DetailedErrorsKey,"true") //是否捕获详细错误
+            .UseSetting(WebHostDefaults.ApplicationKey, "WebHostSample") //显示指定应用程序名称
+            .UseSetting(WebHostDefaults.DetailedErrorsKey, "true") //是否捕获详细错误
             //.UseSetting(WebHostDefaults.PreventHostingStartupKey,"true") //是否阻止承载启动
             //.UseSetting(WebHostDefaults.HostingStartupAssembliesKey,"assembly1;assembly2;") //设置承载启动程序集
             //.UseSetting(WebHostDefaults.HostingStartupExcludeAssembliesKey,"assembly3;assembly3;") //设置承载启动排除程序集
             //.PreferHostingUrls(false) //是否侦听WebHostBuilder配置的url
-            .UseSetting("https_port","8080") //设置HTTPS端口
+            .UseSetting("https_port", "8080") //设置HTTPS端口
             .CaptureStartupErrors(true) //是否捕获启动错误
             .UseEnvironment(EnvironmentName.Development) //设置应用程序环境
             .UseContentRoot(Directory.GetCurrentDirectory()) //指定web程序从哪里搜索文件
@@ -81,7 +178,7 @@ namespace WebHostSample
             {
                 logging.SetMinimumLevel(LogLevel.Warning); //设置最小日志级别
             })
-            .ConfigureKestrel((context,options) => 
+            .ConfigureKestrel((context, options) =>
             {
                 options.Limits.MaxRequestBodySize = 20000000; //设置最大请求体大小
             })
@@ -102,7 +199,7 @@ namespace WebHostSample
             return WebHost.CreateDefaultBuilder(args)
                 .UseUrls("http://*:5000")
                 .UseConfiguration(config)
-                .Configure(app => 
+                .Configure(app =>
                 {
                     app.Run(context => context.Response.WriteAsync("Hello,World!"));
                 });
