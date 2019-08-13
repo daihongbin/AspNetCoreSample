@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -158,6 +157,10 @@ namespace WebHostSample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .UseDefaultServiceProvider((context,options) => 
+            {
+                options.ValidateScopes = true;
+            })
             .UseSetting(WebHostDefaults.ApplicationKey, "WebHostSample") //显示指定应用程序名称
             .UseSetting(WebHostDefaults.DetailedErrorsKey, "true") //是否捕获详细错误
             //.UseSetting(WebHostDefaults.PreventHostingStartupKey,"true") //是否阻止承载启动
