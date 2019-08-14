@@ -41,9 +41,49 @@ namespace ConfigurationSample
             */
 
             //交换映射
-            CreateSwapWebHostBuilder(args).Build().Run();
+            //CreateSwapWebHostBuilder(args).Build().Run();
 
-            
+            //环境配置
+            /*
+            //可以直接这样使用
+            var config = new ConfigurationBuilder()
+                .AddEnvironmentVariables("CUSTOM_")
+                .Build();
+
+            var host = new WebHostBuilder()
+                .UseConfiguration(config)
+                .UseKestrel()
+                .UseStartup<Startup>();
+            */
+
+            //文件配置提供程序
+            //ini配置提供程序
+            /*
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddIniFile("config.ini",optional:true,reloadOnChange:true)
+                .Build();
+
+            var host = new WebHostBuilder()
+                .UseConfiguration(config)
+                .UseKestrel()
+                .UseStartup<Startup>();
+            */
+
+            //json配置提供程序
+            /*
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            var host = new WebHostBuilder()
+                .UseConfiguration(config)
+                .UseKestrel()
+                .UseStartup<Startup>();
+            */
+
+
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -77,7 +117,30 @@ namespace ConfigurationSample
                 config.AddEnvironmentVariables(prefix:"PREFIX_");
             })
             .UseStartup<Startup>();
-        
+
+        /*
+         * 文件配置提供程序
+         */
+
+        //Ini配置提供程序
+        public static IWebHostBuilder CreateIniWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((hostingContext,config) => 
+            {
+                config.SetBasePath(Directory.GetCurrentDirectory());
+                config.AddIniFile("config.ini",optional:true,reloadOnChange:true);
+            })
+            .UseStartup<Startup>();
+
+        //json配置提供程序
+        public static IWebHostBuilder CreateJsonWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder()
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                config.SetBasePath(Directory.GetCurrentDirectory());
+                config.AddJsonFile("config.json", optional: true, reloadOnChange: true);
+            })
+            .UseStartup<Startup>();
         
     }
 }
