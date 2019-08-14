@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <section name="section0">
+        <key name="key0">value</key>
+        <key name="key1">value</key>
+    </section>
+    <section name="section1">
+        <key name="key0">value</key>
+        <key name="key1">value</key>
+    </section>
+</configuration>
