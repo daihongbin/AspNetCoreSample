@@ -1,4 +1,5 @@
-﻿﻿using Microsoft.AspNetCore.Mvc;
+﻿﻿using ConfigurationSample.Models;
+ using Microsoft.AspNetCore.Mvc;
  using Microsoft.Extensions.Configuration;
  using Microsoft.Extensions.Logging;
 
@@ -24,10 +25,20 @@
             
             //获取section
             var configSection1 = _config.GetSection("section1");
-            var key1 = configSection1.GetValue<string>("key0");
-            
             var configSection2 = _config.GetSection("section2:subsection0");
             
+            //绑定到实体类
+            /*var starship = new Starship();
+            _config.GetSection("starship").Bind(starship);*/
+            var starship = _config.GetSection("starship").Get<Starship>();
+            
+            //绑定poco对象
+            var tvShow = _config.GetSection("tvshow").Get<TvShow>();
+            
+            // 将数组绑定至类
+            var arrayExample = _config.GetSection("array").Get<ArrayExample>();
+
+            var jsonArrayExmaple = _config.GetSection("json_array").Get<JsonArrayExample>();
             return View();
         }
     }

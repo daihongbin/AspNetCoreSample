@@ -21,6 +21,9 @@ namespace ConfigurationSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //  获取自定义配置里的值
+            var value = _config["quote1"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

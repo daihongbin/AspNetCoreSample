@@ -1,5 +1,12 @@
 ﻿@model object
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration;
 
 <h2>title</h2>
 
 <p>Hello,Michael!</p>
+
+<hr/>
+
+<p>自定义配置值</p>
+<p>@Configuration["quote1"]</p>

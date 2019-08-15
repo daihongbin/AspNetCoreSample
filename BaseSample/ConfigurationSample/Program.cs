@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
+using ConfigurationSample.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConfigurationSample
 {
@@ -125,8 +127,6 @@ namespace ConfigurationSample
                 .UseKestrel()
                 .UseStartup<Startup>();
             */
-            
-            
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -134,9 +134,18 @@ namespace ConfigurationSample
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.SetBasePath(Directory.GetCurrentDirectory());
+                    // 数组绑定至类，其实这句话的意思就是把某个内存集合添加到配置中
                     config.AddInMemoryCollection(arrayDict);
                     config.AddJsonFile("json_array.json", optional: false, reloadOnChange: false);
-                    config.AddJsonFile("section.json", optional: false, reloadOnChange: true);
+                    config.AddJsonFile("section.json", optional: false, reloadOnChange: false);
+                    config.AddJsonFile("starship.json", optional: false,reloadOnChange:false);
+                    config.AddXmlFile("tvshow.xml", optional: false, reloadOnChange: false);
+                    config.AddJsonFile("missing_value.json", optional: false, reloadOnChange: false);
+                    config.AddJsonFile("JsonArrayExample.json", optional: false, reloadOnChange: false);
+                    
+                    //使用自定义的配置
+                    config.AddEFConfiguration(options => options.UseInMemoryDatabase("InMemoryDb"));
+                    
                     //config.AddJsonFile("starship.json", optional: false, reloadOnChange: false);
                     //config.AddXmlFile("tvshow.xml", optional: false, reloadOnChange: false);
                     //config.AddEFConfiguration(options => options.UseInMemoryDataBase("InMemoryDb"));
