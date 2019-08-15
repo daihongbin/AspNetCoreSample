@@ -1,0 +1,14 @@
+﻿@model object
+@using Microsoft.Extensions.Options;
+@using OptionsSample.Models
+@inject IOptionsMonitor<MyOptions> OptionsAccessor
+@{
+    ViewData["Title"] = "Options Sample";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Hello,Michael!</p>
+
+<p>Option1:@OptionsAccessor.CurrentValue.Option1</p>
+<p>Option2:@OptionsAccessor.CurrentValue.Option2</p>
