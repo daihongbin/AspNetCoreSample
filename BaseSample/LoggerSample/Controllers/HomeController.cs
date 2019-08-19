@@ -15,7 +15,16 @@ namespace LoggerSample.Controllers
         public IActionResult Index()
         {
             _logger.LogInformation("这是一条info级别的日志");
+
+            var p1 = "parm1";
+            var p2 = "parm2";
+            _logger.LogInformation("Parameter values: {p2}, {p1}",p1,p2);
             
+            return View();
+        }
+
+        public IActionResult Error()
+        {
             return View();
         }
     }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LoggerSample.Infrastructure;
+using LoggerSample.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,14 +12,14 @@ namespace LoggerSample
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
+        public IConfiguration Configuration;
         
         private readonly ILogger _logger;
 
         public Startup(IConfiguration configuration,ILogger<Startup> logger)
         {
-            _configuration = configuration;
             _logger = logger;
+            Configuration = configuration;
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,6 +29,7 @@ namespace LoggerSample
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             _logger.LogInformation("添加服务的方法！");
+            services.AddTransient<ITodoRepository, TodoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,9 +37,18 @@ namespace LoggerSample
         {
             if (env.IsDevelopment())
             {
+                _logger.LogInformation("开发模式");
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseMvc(route =>
             {
                 route.MapRoute(
