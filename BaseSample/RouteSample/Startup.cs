@@ -18,6 +18,26 @@ namespace RouteSample
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+            // 自定义路由约束
+            services.AddRouting(options =>
+            {
+                // 此处为自定义一个路由约束，MyCustomConstraint为自定义路由约束
+                //options.ConstraintMap.Add("customName",typeof(MyCustomConstraint));
+                
+                // 这样子使用
+                [HttpGet("{id:customName}")]
+            });
+            */
+            
+            // 参数转换器
+            /*
+            services.AddRouting(options =>
+            {
+                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+            });
+            */
+
             services.AddRouting();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -68,6 +88,15 @@ namespace RouteSample
                     defaults: new {controller = "Products", action = "Details"},
                     constraints: new {id = new IntRouteConstraint()},
                     dataTokens: new {locale = "en-US"});
+
+                // 路由参数转换器
+                /*
+                routes.MapRoute(
+                    name: "slugify",
+                    template: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+                */
+
+                routes.MapRoute("blog_route", "blog/{*slug}", defaults: new {controller = "Blog", action = "ReadPost"});
             });
 
             #region 路由配置
@@ -92,6 +121,23 @@ namespace RouteSample
             var route = routeBuilder.Build();
             app.UseRouter(route);
             #endregion
+            
+            // URL生成参考
+            app.Run(async context =>
+            {
+                var dictionary = new RouteValueDictionary
+                {
+                    {"operation", "create"},
+                    {"id", 123}
+                };
+                
+                var vpc = new VirtualPathContext(context,null,dictionary,"Track Package Route");
+                var path = route.GetVirtualPath(vpc).VirtualPath;
+
+                context.Response.ContentType = "text/html";
+                await context.Response.WriteAsync("Menu<hr />");
+                await context.Response.WriteAsync($"<a href='{path}'>Create Package 123</a><br/>");
+            });
         }
     }
 }
